@@ -1,0 +1,23 @@
+# virtualenv
+venv/
+.env
+# python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+# caches, build
+build/
+dist/
+*.egg-info/
+# data / db
+data/
+*.sqlite
+*.db
+*.csv
+# IDE
+.idea/
+.vscode/
+# logs
+*.log
+setup.txt

@@ -1,0 +1,14 @@
+TIMEFRAME = '1d'
+TICKERS = ['CDR.WA']
+ONLY_UPDATE_EXIST = 0
+WHEN_TIME_BREAKE = 50
+HOW_LONG_TIME_BRAKE = 1
+
+#['^NDX', 'GC=F',  'VFITX']
+#['^NDX', 'VFINX', 'VEIEX', 'VFITX']
+
+#'VFINX' - us500
+#'^NDX' - us100
+#'VEIEX' - em
+#'GC=F' - gold
+#'VFITX' - bonds

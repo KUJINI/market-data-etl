@@ -1,0 +1,6 @@
+PERIOD_TO_ANALYSE wskazuje jaki okres ma zostać przeanalizowany wstecz w celu obliczenia momentum wyznaczonych akcji.
+Wpływa na niego wartość SKIP_PERIOD, która wyznacza bufor między analizowanym okresem, a aktualną datą
+
+Przykład:
+SKIP_PERIOD = '1msc'
+Dla daty 01.01.2025 oblicza z okresu od 01.12.2023 do 01.12.2024 zamiast 01.01.2024 do 01.01.2025

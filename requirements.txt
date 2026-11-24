@@ -1,0 +1,17 @@
+beautifulsoup4
+colorama
+finnhub_python
+numpy
+pandas
+playwright
+psycopg2_binary
+Requests
+selenium
+SQLAlchemy
+streamlit
+yfinance
+plotly
+python-dateutil
+pandas_market_calendars
+dotenv
+python-dotenv
