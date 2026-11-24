@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Zmienne środowiskowe i ścieżki
-PROJECT_DIR="/home/kktf/dev/investing/analizaPokrycia"
-VENV_PYTHON="/home/kktf/dev/investing/analizaPokrycia/venv/bin/python3"
-LOG_FILE="/home/kktf/dev/investing/analizaPokrycia/cron_debug.log"
-DICT_LOG_FILE="/home/kktf/dev/investing/analizaPokrycia/cron_dict.log"
+PROJECT_DIR="/home/kktf/dev/investing/market-data-etl"
+VENV_PYTHON="/home/kktf/dev/investing/market-data-etl/venv/bin/python3"
+LOG_FILE="/home/kktf/dev/investing/market-data-etl/cron_debug.log"
+DICT_LOG_FILE="/home/kktf/dev/investing/market-data-etl/cron_dict.log"
 
 export PYTHONPATH=$PROJECT_DIR
 export PATH=/usr/bin:/bin:$PATH
