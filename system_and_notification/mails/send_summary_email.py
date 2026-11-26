@@ -1,6 +1,9 @@
 import smtplib
 import os
+import sys
+from pathlib import Path
 from datetime import date, timedelta
+from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from sqlalchemy import text
@@ -269,7 +272,7 @@ def get_last_trading_day(reference_date=None):
         return reference_date - timedelta(days=1)
 
 
-def send_email():
+def send_email(log_file_path=None):
     if not SENDER_PASSWORD:
         print("BŁĄD: Brak hasła do e-maila (zmienna środowiskowa EMAIL_PASS).")
         return
@@ -283,7 +286,7 @@ def send_email():
     html_content = build_html_email(summary)
     target_date_str = summary["target_date_str"]
 
-    msg = MIMEMultipart("alternative")
+    msg = MIMEMultipart("mixed")
     # Łączenie prefiksu z datą
     msg['Subject'] = f"{subject_prefix} za {target_date_str}"
     msg['From'] = SENDER_EMAIL
@@ -292,6 +295,26 @@ def send_email():
     msg['To'] = ", ".join(receivers_list)
 
     msg.attach(MIMEText(html_content, "html"))
+
+    # Wybór pliku logu: z argumentu CLI lub najnowszy z katalogu cron_logs/
+    log_file = Path(log_file_path) if log_file_path else None
+    if not log_file or not log_file.is_file():
+        logs_dir = Path(__file__).resolve().parents[2] / "cron_logs"
+        if logs_dir.is_dir():
+            log_files = sorted(logs_dir.glob("cron_*.log"), key=lambda p: p.stat().st_mtime, reverse=True)
+            log_file = log_files[0] if log_files else None
+
+    if log_file and log_file.is_file():
+        raw_bytes = log_file.read_bytes()
+        max_raw_bytes = 18 * 1024 * 1024  # 18 MB raw -> ~24 MB po kodowaniu Base64 (limit Gmaila to 25 MB)
+        if len(raw_bytes) > max_raw_bytes:
+            notice = b"[UCIETO POCZATEK LOGU - PRZEKROCZONO LIMIT ROZMIARU ZALACZNIKA]\n"
+            raw_bytes = notice + raw_bytes[-max_raw_bytes:]
+
+        attachment = MIMEApplication(raw_bytes, _subtype="octet-stream")
+        attachment.add_header("Content-Disposition", "attachment", filename=log_file.name)
+        msg.attach(attachment)
+        print(f"Dołączono plik logu: {log_file.name}")
 
     try:
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
@@ -304,4 +327,4 @@ def send_email():
 
 
 if __name__ == "__main__":
-    send_email()
+    send_email(sys.argv[1] if len(sys.argv) > 1 else None)
